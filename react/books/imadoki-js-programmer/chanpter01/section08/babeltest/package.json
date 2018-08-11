@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel bmi.js -o bmi.out.js",
+    "watch": "babel bmi.js -w -o bmi.out.js",
     "start": "node bmi.out.js"
   },
   "keywords": [],
