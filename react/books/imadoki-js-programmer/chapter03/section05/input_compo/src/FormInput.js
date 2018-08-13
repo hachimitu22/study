@@ -28,8 +28,8 @@ export default class FormInput extends Component {
       value: newValue,
       isOK: newIsOK
     });
-    if (this.props.onChaante) {
-      this.props.onChante({
+    if (this.props.onChange) {
+      this.props.onChange({
         target: this,
         value: newValue,
         isOK: newIsOK,
