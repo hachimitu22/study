@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class ZipInput extends Component {
   constructor (props) {
     super(props);
-    const v = (this.props.value) ? this.props.vale : '';
+    const v = (this.props.value) ? this.props.value : '';
 
     this.state = {
       value: v,
