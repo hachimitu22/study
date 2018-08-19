@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node wiki-server.js",
+    "watch": "webpack -w",
+    "build": "webpack",
+    "build:parser": "pegjs -o src/wiki_parser.js src/wiki_parser.pegjs"
   },
   "keywords": [],
   "author": "",
