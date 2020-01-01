@@ -50,3 +50,11 @@ for (i <- 0 to 2)
 val numNames = Array("zero", "one", "two")
 val numNames2 = Array.apply("zero", "one", "two")
 ```
+
+### 3.2 リスト
+
+リスト3.3を実行すると warning が発生する  
+**warning: there was one deprecation warning (since 2.13.0); re-run with -deprecation for details**  
+廃止予定([deprecation warning](http://tetu1984.hateblo.jp/entry/20110221/1298302399))のメソッドを使っている場合に出る警告とのこと。  
+
+どうやら List の + メソッドが廃止予定っぽい。先頭に "" を追加して　String で + して String 型になってしまえば問題なかった。
