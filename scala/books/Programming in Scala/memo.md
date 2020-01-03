@@ -58,3 +58,7 @@ val numNames2 = Array.apply("zero", "one", "two")
 廃止予定([deprecation warning](http://tetu1984.hateblo.jp/entry/20110221/1298302399))のメソッドを使っている場合に出る警告とのこと。  
 
 どうやら List の + メソッドが廃止予定っぽい。先頭に "" を追加して　String で + して String 型になってしまえば問題なかった。
+
+### 3.3 タプル
+
+- アクセスが 1 からなのは Haskell などの伝統だから。
