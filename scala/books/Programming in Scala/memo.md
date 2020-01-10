@@ -101,3 +101,6 @@ val numNames2 = Array.apply("zero", "one", "two")
 - main メソッドを持つスタンドアロンシンブルトンオブジェクトはエントリーポイントになる。
 - scala はスクリプトを実行できる。 sacalc はコンパイルが出来る。
   - コンパイル後は scala で実行できる。
+
+### 4.5 App トレイト
+
