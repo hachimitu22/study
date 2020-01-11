@@ -105,3 +105,9 @@ val numNames2 = Array.apply("zero", "one", "two")
 ### 4.5 App トレイト
 
 ## 第05章 基本型と演算子
+
+### 5.1 基本型
+
+- Int 型は**scala.Int**が完全名になる。
+- String 型は**java.lang**パッケージのものになる。
+- 全てのソースファイルに**scala**と**java.lang**がインポートされている。
