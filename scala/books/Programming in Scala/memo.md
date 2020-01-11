@@ -104,3 +104,4 @@ val numNames2 = Array.apply("zero", "one", "two")
 
 ### 4.5 App トレイト
 
+## 第05章 基本型と演算子
