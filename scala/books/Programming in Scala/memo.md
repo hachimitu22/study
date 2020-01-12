@@ -122,3 +122,23 @@ val numNames2 = Array.apply("zero", "one", "two")
   - | と stripMargin メソッドでインデントも揃えれる。
 - 同名の Symbol は同じ物を参照している。(グローバル変数みたいな感じっぽい?)
 
+### 5.3 文字列補間
+
+- 補間子 s, f, raw がある。
+
+``` scala
+scala> val name = "reader"
+name: String = reader
+
+scala> println(s"Hello, $name!")
+Hello, reader!
+
+scala> s"The answer is ${6 * 7}."
+res1: String = The answer is 42.
+
+scala> println(raw"No\\\\escape!")
+No\\\\escape!
+
+scala> f"${math.Pi}%.5f"
+res3: String = 3.14159
+```
