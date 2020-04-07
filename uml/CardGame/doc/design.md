@@ -290,24 +290,43 @@ destroy ゲームコントローラー
 ```plantuml
 @startuml
 
-class ゲームコントローラー
-abstract baseプレイヤー
-class プレイヤー
-class CPU
-class 山札
-class カード
+class War {
+  - Player player
+  - CpuPlayer cpuPlayer
+  - Stack trumpStack
+  + void GameStart(void)
+  + void DrawPlayer(void)
+  + void DrawCPU(void)
+  + void AnnounceResult(void)
+  + void GameEnd(void)
+}
+abstract BasePlayer {
+  - Card card
+  + void drawCard(Stack stack)
+  + Card takeCardReference(void)
+}
+class Player
+class CpuPlayer
+class Stack {
+  - Card cards[]
+  + Card take(void)
+}
+class Card {
+  + String suit
+  + int number
+}
 
-ゲームコントローラー "1" o--> "1" 山札
-ゲームコントローラー "1" o--> "2" baseプレイヤー
+War "1" o--> "1" Stack
+War "1" o--> "2" BasePlayer
 
-プレイヤー -up-|> baseプレイヤー
-CPU -up-|> baseプレイヤー
+Player -up-|> BasePlayer
+CpuPlayer -up-|> BasePlayer
 
-山札 "1" o--> "*" カード
-baseプレイヤー "1" o--> "0..1" カード
+Stack "1" o--> "*" Card
+BasePlayer "1" o--> "0..1" Card
 
-baseプレイヤー -> 山札
-ゲームコントローラー --> カード
+BasePlayer -> Stack
+War --> Card
 
 @enduml
 ```
