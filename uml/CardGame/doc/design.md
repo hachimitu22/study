@@ -309,6 +309,7 @@ class Player
 class CpuPlayer
 class Stack {
   - Card cards[]
+  + void shuffle(void)
   + Card take(void)
 }
 class Card {
