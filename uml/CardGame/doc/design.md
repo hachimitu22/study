@@ -294,11 +294,12 @@ class War {
   - Player player
   - CpuPlayer cpuPlayer
   - Stack trumpStack
-  + void GameStart(void)
-  + void DrawPlayer(void)
-  + void DrawCPU(void)
-  + void AnnounceResult(void)
-  + void GameEnd(void)
+  - void GameStart(void)
+  - void DrawPlayer(void)
+  - void DrawCPU(void)
+  - void AnnounceResult(void)
+  - void GameEnd(void)
+  + void Run(void)
 }
 abstract BasePlayer {
   - Card card

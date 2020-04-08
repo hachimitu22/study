@@ -8,22 +8,34 @@ class War {
     this.cpuPlayer = new CpuPlayer();
     this.stack = new Stack();
   }
-  public GameStart(): void {
+  public Run(): void {
     console.log('ゲームを開始するには何かキーを押してください');
+    this.GameStart();
+
+    console.log('カードを引くには何かキーを押してください');
+    this.DrawPlayer();
+
+    console.log('CPUがカードを引きます、何かキーを押してください');
+    this.DrawCPU();
+
+    console.log('CPUがカードを引きました、お互いの手札を見せあいます。何かキーを押してください');
+    this.AnnounceResult();
+
+    console.log('ゲームを終了します。何かキーを押してください');
+    this.GameEnd();
+  }
+  private GameStart(): void {
     this.stack.shuffle();
     console.log('カードをシャッフルして山札を用意しました');
-    console.log('カードを引くには何かキーを押してください');
   }
-  public DrawPlayer(): void {
+  private DrawPlayer(): void {
     this.player.drawCard(this.stack);
     console.log(`カードを引きました、数は ${this.player.takeCardReference().num} です`);
-    console.log('CPUがカードを引きます、何かキーを押してください');
   }
-  public DrawCPU(): void {
+  private DrawCPU(): void {
     this.cpuPlayer.drawCard(this.stack);
-    console.log('CPUがカードを引きました、お互いの手札を見せあいます。何かキーを押してください');
   }
-  public AnnounceResult(): void{
+  private AnnounceResult(): void{
     const pn: Number = this.player.takeCardReference().num;
     const cn: Number = this.cpuPlayer.takeCardReference().num;
     const [ps, cs]: [string, string] = pn > cn ? ['勝ち', '負け'] :
@@ -31,9 +43,8 @@ class War {
                                       ['引き分け', '引き分け'];
 
     console.log(`${ps} プレイヤー ${pn} CPU ${cn} ${cs}`);
-    console.log('ゲームを終了します。何かキーを押してください');
   }
-  public GameEnd(): void{
+  private GameEnd(): void{
 
   }
 }
@@ -102,11 +113,7 @@ class Stack {
 
 function main() {
   const war = new War();
-  war.GameStart();
-  war.DrawPlayer();
-  war.DrawCPU();
-  war.AnnounceResult();
-  war.GameEnd();
+  war.Run();
 }
 
 main();
