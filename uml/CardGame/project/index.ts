@@ -1,3 +1,5 @@
+import * as readline from 'readline'
+
 class War {
   private player: Player;
   private cpuPlayer: CpuPlayer;
@@ -9,20 +11,31 @@ class War {
     this.stack = new Stack();
   }
   public Run(): void {
-    console.log('ゲームを開始するには何かキーを押してください');
-    this.GameStart();
+    const rl = readline.createInterface(process.stdin, process.stdout);
 
-    console.log('カードを引くには何かキーを押してください');
-    this.DrawPlayer();
+    (async () => {
+      console.log('ゲームを開始するには何かキーを押してください');
+      await new Promise(res => rl.once('line', res));
+      this.GameStart();
 
-    console.log('CPUがカードを引きます、何かキーを押してください');
-    this.DrawCPU();
+      console.log('カードを引くには何かキーを押してください');
+      await new Promise(res => rl.once('line', res));
+      this.DrawPlayer();
 
-    console.log('CPUがカードを引きました、お互いの手札を見せあいます。何かキーを押してください');
-    this.AnnounceResult();
+      console.log('CPUがカードを引きます、何かキーを押してください');
+      await new Promise(res => rl.once('line', res));
+      this.DrawCPU();
 
-    console.log('ゲームを終了します。何かキーを押してください');
-    this.GameEnd();
+      console.log('CPUがカードを引きました、お互いの手札を見せあいます。何かキーを押してください');
+      await new Promise(res => rl.once('line', res));
+      this.AnnounceResult();
+
+      console.log('ゲームを終了します。何かキーを押してください');
+      await new Promise(res => rl.once('line', res));
+      this.GameEnd();
+
+      process.exit();
+    })();
   }
   private GameStart(): void {
     this.stack.shuffle();
@@ -38,9 +51,9 @@ class War {
   private AnnounceResult(): void{
     const pn: Number = this.player.takeCardReference().num;
     const cn: Number = this.cpuPlayer.takeCardReference().num;
-    const [ps, cs]: [string, string] = pn > cn ? ['勝ち', '負け'] :
-                                      pn < cn ? ['負け', '勝ち'] :
-                                      ['引き分け', '引き分け'];
+    const [ps, cs]: [string, string] = pn > cn ? ['勝ち', '負け']
+                                      : pn < cn ? ['負け', '勝ち']
+                                      : ['引き分け', '引き分け'];
 
     console.log(`${ps} プレイヤー ${pn} CPU ${cn} ${cs}`);
   }
