@@ -304,12 +304,12 @@ loop 全プレイヤーにカードを配るまで
   ユーザー -> 戦争 : キーを押す
   deactivate ユーザー
 
-  戦争 -> プレイヤー : カードを引く
-  activate プレイヤー
-  プレイヤー -> 山札 : カードを引く
+  戦争 -> 山札 : カードを引く
   activate 山札
-  プレイヤー <-- 山札 : カードを渡す
+  戦争 <-- 山札 : カードを渡す
   deactivate 山札
+  戦争 -> プレイヤー : カードを配る
+  activate プレイヤー
   deactivate プレイヤー
 end
 
@@ -388,20 +388,24 @@ destroy 戦争
 @startuml
 
 class War {
-  - Player player
-  - CpuPlayer cpuPlayer
-  - Stack trumpStack
+  - IPlayer players
+  - Stack stack
   - void GameStart(void)
-  - void DrawPlayer(void)
-  - void DrawCPU(void)
+  - void DecideNumberOfPlayer(void)
+  - void DecideNameOfPlayers(void)
+  - void DecideNumberOfCpu(void)
+  - void DealCards(void)
   - void AnnounceResult(void)
   - void GameEnd(void)
   + void Run(void)
 }
+interface IPlayer {
+  + void receiveCard(Card Card)
+  + Card showCard(void)
+}
 abstract BasePlayer {
+  + String name{readOnly}
   - Card card
-  + void drawCard(Stack stack)
-  + Card takeCardReference(void)
 }
 class Player
 class CpuPlayer
@@ -416,15 +420,15 @@ class Card {
 }
 
 War "1" o--> "1" Stack
-War "1" o--> "2" BasePlayer
+War "1" o--> "2..*" IPlayer
 
+BasePlayer -up-|> IPlayer
 Player -up-|> BasePlayer
 CpuPlayer -up-|> BasePlayer
 
 Stack "1" o--> "*" Card
-BasePlayer "1" o--> "0..1" Card
+IPlayer "1" o--> "0..1" Card
 
-BasePlayer -> Stack
 War --> Card
 
 @enduml
