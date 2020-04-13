@@ -28,7 +28,7 @@ class War {
       const str: string = readlineSync.question(`ユーザー人数を入力してください:`);
       const num: number = parseInt(str);
 
-      if (!isNaN(num) && 0 < num && num < this.stack.remain()) {
+      if (!isNaN(num) && 0 <= num && num < this.stack.remain()) {
         this.players.length = num;
         console.log(`「ユーザー人数は ${num} 人です」`);
         break;
