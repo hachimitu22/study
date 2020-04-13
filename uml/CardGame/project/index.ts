@@ -1,64 +1,108 @@
-import * as readline from 'readline'
+const readlineSync = require('readline-sync');
 
 class War {
-  private player: Player;
-  private cpuPlayer: CpuPlayer;
+  private players: IPlayer[];
   private stack: Stack;
 
   constructor() {
-    this.player = new Player();
-    this.cpuPlayer = new CpuPlayer();
+    this.players = [];
     this.stack = new Stack();
   }
   public Run(): void {
-    const rl = readline.createInterface(process.stdin, process.stdout);
+    this.GameStart();
+    this.DecideNumberOfPlayer();
+    this.DecideNameOfPlayers();
+    this.DecideNumberOfCpu();
 
-    (async () => {
-      console.log('ゲームを開始するには何かキーを押してください');
-      await new Promise(res => rl.once('line', res));
-      this.GameStart();
+    this.Shuffle();
 
-      console.log('カードを引くには何かキーを押してください');
-      await new Promise(res => rl.once('line', res));
-      this.DrawPlayer();
-
-      console.log('CPUがカードを引きます、何かキーを押してください');
-      await new Promise(res => rl.once('line', res));
-      this.DrawCPU();
-
-      console.log('CPUがカードを引きました、お互いの手札を見せあいます。何かキーを押してください');
-      await new Promise(res => rl.once('line', res));
-      this.AnnounceResult();
-
-      console.log('ゲームを終了します。何かキーを押してください');
-      await new Promise(res => rl.once('line', res));
-      this.GameEnd();
-
-      process.exit();
-    })();
+    this.DealCards();
+    this.AnnounceResult();
+    this.GameEnd();
   }
   private GameStart(): void {
-    this.stack.shuffle();
-    console.log('カードをシャッフルして山札を用意しました');
+    readlineSync.question(`ゲームを開始するには何かキーを押してください`);
   }
-  private DrawPlayer(): void {
-    this.player.drawCard(this.stack);
-    console.log(`カードを引きました、数は ${this.player.takeCardReference().num} です`);
+  private DecideNumberOfPlayer(): void {
+    do {
+      const str: string = readlineSync.question(`ユーザー人数を入力してください:`);
+      const num: number = parseInt(str);
+
+      if (!isNaN(num) && 0 < num && num < this.stack.remain()) {
+        this.players.length = num;
+        console.log(`「ユーザー人数は ${num} 人です」`);
+        break;
+      } else {
+        console.log('無効な値です');
+      }
+    } while (true);
   }
-  private DrawCPU(): void {
-    this.cpuPlayer.drawCard(this.stack);
+  private DecideNameOfPlayers(): void {
+    for (let i = 0; i < this.players.length; i++){
+      const count: number = i + 1;
+
+      do {
+        const name: string = readlineSync.question(`ユーザー${count}人目の名前を入力してください:`);
+
+        if (name && name.length <= 20) {
+          this.players[i] = new Player(name);
+          console.log(`ユーザー${count}人目の名前は ${name} です`)
+          break;
+        } else {
+          console.log('無効な値です')
+        }
+      } while (true);
+    }
+  }
+  private DecideNumberOfCpu(): void {
+    do {
+      const str: string = readlineSync.question('CPU人数を入力してください:');
+      const num: number = parseInt(str);
+
+      if (!isNaN(num)) {
+        const sum = this.players.length + num;
+
+        if (2 <= sum && sum <= this.stack.remain()) {
+          const cpus: CpuPlayer[] = Array.from({ length: num }).map((_, i: number) => {
+            return new CpuPlayer(`CPU${i + 1}`);
+          });
+          console.log(`CPU人数は ${num} 人です」`);
+          this.players = this.players.concat(cpus);
+          break;
+        }
+      }
+      console.log('無効な値です');
+
+    } while (true);
+  }
+  private Shuffle(): void {
+      readlineSync.question('山札をシャッフルします、何かキーを押してください');
+      this.stack.shuffle();
+      console.log('シャッフルが終わりました');
+  }
+  private DealCards(): void {
+      readlineSync.question('カードを配ります、何かキーを押してください');
+      this.players.forEach((player: IPlayer) => {
+      const card = this.stack.take();
+      player.receiveCard(card);
+    });
   }
   private AnnounceResult(): void{
-    const pn: Number = this.player.takeCardReference().num;
-    const cn: Number = this.cpuPlayer.takeCardReference().num;
-    const [ps, cs]: [string, string] = pn > cn ? ['勝ち', '負け']
-                                      : pn < cn ? ['負け', '勝ち']
-                                      : ['引き分け', '引き分け'];
+    readlineSync.question('勝敗を表示します。何かキーを押してください');
 
-    console.log(`${ps} プレイヤー ${pn} CPU ${cn} ${cs}`);
+    const maxNumber = Math.max(...this.players.map((player: IPlayer) => {
+      return player.showCard().num;
+    }));
+
+    this.players.forEach((player: IPlayer) => {
+      const num = player.showCard().num;
+      const message = maxNumber === num ? '勝ち' : '負け';
+
+      console.log(`${player.name} : ${num} : ${message}`);
+    });
   }
   private GameEnd(): void{
-
+    readlineSync.question('ゲームを終了します。何かキーを押してください');
   }
 }
 
