@@ -115,11 +115,22 @@ class Stack {
   }
   public shuffle(): void {
     // カードを切るのを再現してみる
-    for(let i = 0; i < 100; i++){
-      const cutIndex = Math.floor(Math.random() * (this.cards.length - 1)) + 1;
-      const top = this.cards.slice(0, cutIndex);
-      const bottom = this.cards.slice(cutIndex);
-      this.cards = bottom.concat(top);
+    const cutNum: number = 5;
+
+    const _sh = (cs: Card[], count: number): Card[] => {
+      if (count >= cutNum || cs.length <= 1) {
+        return cs;
+      }
+
+      const cutIndex = Math.floor(Math.random() * (cs.length - 1)) + 1;
+      const top = cs.slice(0, cutIndex);
+      const bottom = cs.slice(cutIndex);
+
+      return _sh(bottom, count + 1).concat(top);
+    };
+
+    for (let i = 0; i < 100; i++){
+      this.cards = _sh(this.cards, 0);
     }
   }
   public take(): Card {
