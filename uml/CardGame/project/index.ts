@@ -62,16 +62,24 @@ class War {
   }
 }
 
-abstract class BasePlayer {
+interface IPlayer {
+  readonly name: string;
+  receiveCard(card: Card): void;
+  showCard(): Card;
+}
+
+abstract class BasePlayer implements IPlayer {
+  public readonly name: string;
   private card: Card | null;
 
-  constructor() {
+  constructor(name: string) {
     this.card = null;
+    this.name = name;
   }
-  public drawCard(stack: Stack): void {
-    this.card = stack.take();
+  public receiveCard(card: Card): void {
+    this.card = card;
   }
-  public takeCardReference(): Card {
+  public showCard(): Card {
     if(this.card) {
       return this.card;
     } else {
@@ -86,7 +94,7 @@ class CpuPlayer extends BasePlayer {
 }
 
 class Card {
-  constructor(public readonly suit: String, public readonly num: Number){}
+  constructor(public readonly suit: string, public readonly num: number) { }
 }
 
 class Stack {
@@ -94,16 +102,16 @@ class Stack {
 
   constructor() {
     const suits: string[] = ['spade', 'heart', 'diamond', 'club'];
+    const numbers: number[] = Array.from({ length: 13 }, (_, i: number) => i + 1);
 
     this.cards = [];
 
-    for(let i = 0; i < 13; i++) {
-      const num: Number = i + 1;
-      suits.forEach((suit: string) => {
+    suits.forEach((suit: string) => {
+      numbers.forEach((num: number) => {
         const card = new Card(suit, num);
         this.cards.push(card);
       });
-    }
+    });
   }
   public shuffle(): void {
     // カードを切るのを再現してみる
@@ -121,6 +129,9 @@ class Stack {
     } else {
       throw new Error('もうカードがありません。')
     }
+  }
+  public remain(): number {
+    return this.cards.length;
   }
 }
 
