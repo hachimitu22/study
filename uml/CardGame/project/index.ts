@@ -134,7 +134,7 @@ class Stack {
     }
   }
   public take(): Card {
-    const card = this.cards.pop();
+    const card = this.cards.shift();
     if(card){
       return card;
     } else {
