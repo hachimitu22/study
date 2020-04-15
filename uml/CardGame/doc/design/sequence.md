@@ -16,29 +16,17 @@ activate 戦争
 ユーザー -> 戦争 : キー入力
 deactivate ユーザー
 
-戦争 -> 山札 : 山札を生成
-activate 山札
-loop 52枚分行う
-  山札 -> カード : カード生成
-  activate カード
-  カード -> カード : 初期化
-  山札 <-- カード : カードを返す
-  deactivate カード
-end
-戦争 <-- 山札 : 山札を返す
-deactivate 山札
-
 @enduml
 ```
 
 ```plantuml
 @startuml
 
-title __ユーザー人数を決定する__
+title __プレイヤーを決める__
 
 actor ユーザー
 
-[-> 戦争 : ユーザー人数を決定する
+[-> 戦争 : プレイヤーを決める
 activate 戦争
 
 戦争 -> 戦争 : 「ユーザー人数を入力してください:」\nを画面に表示する
@@ -54,19 +42,6 @@ else 有効な人数が入力されなかった
     有効な値が入力されるまで繰り返す
   end note
 end
-
-@enduml
-```
-
-```plantuml
-@startuml
-
-title __ユーザー名を決定する__
-
-actor ユーザー
-
-[-> 戦争 : ユーザー名を決定する
-activate 戦争
 
 loop 全ユーザーの名前の入力が終わるまで
   戦争 -> 戦争 : 「ユーザーX人目の名前を入力してください:」\nを画面に表示する
@@ -88,19 +63,6 @@ loop 全ユーザーの名前の入力が終わるまで
     end note
   end
 end
-
-@enduml
-```
-
-```plantuml
-@startuml
-
-title __CPU人数を決定する__
-
-actor ユーザー
-
-[-> 戦争 : CPU人数を決定する
-activate 戦争
 
 戦争 -> 戦争 : 「CPU人数を入力してください:」\nを画面に表示する
 ユーザー <- 戦争 : 入力待ち
@@ -129,37 +91,38 @@ end
 ```plantuml
 @startuml
 
-title __山札をシャッフルさせる__
+title __対戦する__
 
 actor ユーザー
 
-[-> 戦争 : 山札をシャッフルさせる
+[-> 戦争 : 対戦する
 activate 戦争
 
-戦争 -> 戦争 : 「山札をシャッフルします、何かキーを押してください」\nを画面に表示する
-ユーザー <- 戦争 : 入力待ち
-activate ユーザー
-ユーザー -> 戦争 : キーを押す
-deactivate ユーザー
+opt 山札が無い or 山札が足りない
+  戦争 -> 山札 : 山札を生成
+  activate 山札
+  loop 52枚分行う
+    山札 -> カード : カード生成
+    activate カード
+    カード -> カード : 初期化
+    山札 <-- カード : カードを返す
+    deactivate カード
+  end
+  戦争 <-- 山札 : 山札を返す
+  deactivate 山札
 
-戦争 -> 山札 : シャッフルする
-activate 山札
-deactivate 山札
+  戦争 -> 戦争 : 「山札をシャッフルします、何かキーを押してください」\nを画面に表示する
+  ユーザー <- 戦争 : 入力待ち
+  activate ユーザー
+  ユーザー -> 戦争 : キーを押す
+  deactivate ユーザー
 
-戦争 -> 戦争 : 「シャッフルが終わりました」\nを画面に表示する
+  戦争 -> 山札 : シャッフルする
+  activate 山札
+  deactivate 山札
 
-@enduml
-```
-
-```plantuml
-@startuml
-
-title __カードを配らせる__
-
-actor ユーザー
-
-[-> 戦争 : カードを配らせる
-activate 戦争
+  戦争 -> 戦争 : 「シャッフルが終わりました」\nを画面に表示する
+end
 
 戦争 -> 戦争 : 「カードを配ります、何かキーを押してください」\nを画面に表示する
 ユーザー <- 戦争 : 入力待ち
@@ -178,17 +141,6 @@ loop 全プレイヤーにカードを配るまで
   deactivate プレイヤー
 end
 
-@enduml
-```
-
-```plantuml
-@startuml
-
-title __勝敗を表示する__
-
-actor ユーザー
-
-[-> 戦争 : 勝敗を表示する
 activate 戦争
 戦争 -> 戦争 : 「勝敗を表示します。何かキーを押してください」\nを画面に表示する
 ユーザー <- 戦争 : 入力待ち
@@ -211,6 +163,29 @@ note right
     ユーザー2 : club   2 負け
     CPU1      : club   4 負け
 end note
+
+@enduml
+```
+
+```plantuml
+@startuml
+
+title __もう一度遊ぶ__
+
+actor ユーザー
+
+[-> 戦争 : もう一度遊ぶ
+
+activate 戦争
+戦争 -> 戦争 : 「もう一度対戦します。何かキーを押してください」\nを画面に表示する
+ユーザー <- 戦争 : 入力待ち
+activate ユーザー
+ユーザー -> 戦争 : キー入力
+deactivate ユーザー
+
+ref over 戦争
+  対戦する
+end
 
 @enduml
 ```
