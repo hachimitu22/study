@@ -7,23 +7,34 @@ class War {
   constructor() {
     this.players = [];
     this.stack = new Stack();
+    this.stack.shuffle();
   }
   public Run(): void {
     this.GameStart();
-    this.DecideNumberOfPlayer();
-    this.DecideNameOfPlayers();
-    this.DecideNumberOfCpu();
+    this.DecidePlayers();
 
-    this.Shuffle();
+    this.Play();
+    while (this.IsContinue()) {
+      this.Continue();
+    }
 
-    this.DealCards();
-    this.AnnounceResult();
     this.GameEnd();
+  }
+  private IsContinue(): boolean {
+    const str: string = readlineSync.question(`もう一度対戦する場合は1を入力してください。終了する場合は1以外を入力してください:`);
+    const num: number = parseInt(str);
+
+    if (!isNaN(num) && num === 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
   private GameStart(): void {
     readlineSync.question(`ゲームを開始するには何かキーを押してください`);
   }
-  private DecideNumberOfPlayer(): void {
+  private DecidePlayers(): void {
+    // input number of user
     do {
       const str: string = readlineSync.question(`ユーザー人数を入力してください:`);
       const num: number = parseInt(str);
@@ -36,8 +47,8 @@ class War {
         console.log('無効な値です');
       }
     } while (true);
-  }
-  private DecideNameOfPlayers(): void {
+
+    // input users name
     for (let i = 0; i < this.players.length; i++){
       const count: number = i + 1;
 
@@ -53,8 +64,8 @@ class War {
         }
       } while (true);
     }
-  }
-  private DecideNumberOfCpu(): void {
+
+    // input number of cpu
     do {
       const str: string = readlineSync.question('CPU人数を入力してください:');
       const num: number = parseInt(str);
@@ -75,21 +86,23 @@ class War {
 
     } while (true);
   }
-  private Shuffle(): void {
+  private Play(): void {
+    if (this.players.length > this.stack.remain()) {
+      readlineSync.question('山札を新しくします、何かキーを押してください');
+      this.stack = new Stack();
       readlineSync.question('山札をシャッフルします、何かキーを押してください');
       this.stack.shuffle();
       console.log('シャッフルが終わりました');
-  }
-  private DealCards(): void {
-      readlineSync.question('カードを配ります、何かキーを押してください');
-      this.players.forEach((player: IPlayer) => {
+    }
+
+    readlineSync.question('カードを配ります、何かキーを押してください');
+    this.players.forEach((player: IPlayer) => {
       const card = this.stack.take();
       player.receiveCard(card);
     });
-  }
-  private AnnounceResult(): void{
-    readlineSync.question('勝敗を表示します。何かキーを押してください');
 
+
+    readlineSync.question('勝敗を表示します。何かキーを押してください');
     const maxNumber = Math.max(...this.players.map((player: IPlayer) => {
       return player.showCard().num;
     }));
@@ -100,6 +113,10 @@ class War {
 
       console.log(`${player.name} : ${num} : ${message}`);
     });
+  }
+  private Continue(): void {
+    readlineSync.question('もう一度対戦します。何かキーを押してください');
+    this.Play();
   }
   private GameEnd(): void{
     readlineSync.question('ゲームを終了します。何かキーを押してください');
