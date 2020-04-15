@@ -110,8 +110,9 @@ class War {
     this.players.forEach((player: IPlayer) => {
       const num = player.showCard().num;
       const message = maxNumber === num ? '勝ち' : '負け';
+      const name = (player.name + ' '.repeat(10)).substr(0, 20);
 
-      console.log(`${player.name} : ${num} : ${message}`);
+      console.log(`${name} : ${('  ' + num).substr(-2)} : ${message}`);
     });
   }
   private Continue(): void {
