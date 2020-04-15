@@ -3,49 +3,54 @@
 ```plantuml
 @startuml
 
-class War {
-  - IPlayer players
-  - Stack stack
-  - void GameStart(void)
-  - void DecideNumberOfPlayer(void)
-  - void DecideNameOfPlayers(void)
-  - void DecideNumberOfCpu(void)
-  - void DealCards(void)
-  - void AnnounceResult(void)
-  - void GameEnd(void)
-  + void Run(void)
-}
-interface IPlayer {
-  + void receiveCard(Card Card)
-  + Card showCard(void)
-}
-abstract BasePlayer {
-  + String name{readOnly}
-  - Card card
-}
-class Player
-class CpuPlayer
-class Stack {
-  - Card cards[]
-  + void shuffle(void)
-  + Card take(void)
-}
-class Card {
-  + String suit
-  + int number
+namespace Game {
+  class War {
+    - IPlayer players[]
+    - Stack stack
+    - void GameStart(void)
+    - void DecidePlayers(void)
+    - void Play(void)
+    - void Continue(void)
+    - void GameEnd(void)
+    + void Run(void)
+  }
+
+  namespace Player {
+    interface IPlayer {
+      + String name{readOnly}
+      + void receiveCard(Card)
+      + Card showCard(void)
+    }
+    abstract BasePlayer {
+      - Card card
+    }
+    class UserPlayer
+    class CpuPlayer
+  }
+  class Stack {
+    - Card cards[]
+    + void shuffle(void)
+    + Card take(void)
+  }
+  namespace Card {
+    class Card {
+      + String suit{readOnly}
+      + int number{readOnly}
+    }
+  }
 }
 
-War "1" o--> "1" Stack
-War "1" o--> "2..*" IPlayer
+Game.War "1" o--> "1" Game.Stack
+Game.War "1" o--> "2..*" Game.Player.IPlayer
 
-BasePlayer -up-|> IPlayer
-Player -up-|> BasePlayer
-CpuPlayer -up-|> BasePlayer
+Game.Player.BasePlayer .up.|> Game.Player.IPlayer
+Game.Player.UserPlayer -up-|> Game.Player.BasePlayer
+Game.Player.CpuPlayer -up-|> Game.Player.BasePlayer
 
-Stack "1" o--> "*" Card
-IPlayer "1" o--> "0..1" Card
+Game.Stack "1" o--> "*" Game.Card.Card
+Game.Player.IPlayer "1" o--> "0..1" Game.Card.Card
 
-War --> Card
+Game.War ..> Game.Card.Card
 
 @enduml
 ```
