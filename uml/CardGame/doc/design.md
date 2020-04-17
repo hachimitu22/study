@@ -56,3 +56,8 @@
 - [ユースケース図](design/usecase.md)
 - [クラス図](design/class.md)
 - [シーケンス図](design/sequence.md)
+
+## 未定要求
+
+- ログ機能
+- レコード機能
