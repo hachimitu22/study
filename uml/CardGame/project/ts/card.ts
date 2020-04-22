@@ -10,7 +10,7 @@ export enum Direction {
 };
 
 export default class Card {
-  constructor(private suit: Suit, private num: number, private direction: Direction) {
+  constructor(public readonly suit: Suit, public readonly num: number, public readonly direction: Direction) {
   };
   public flip(direction: Direction): void {
   }
