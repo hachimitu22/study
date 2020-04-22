@@ -81,14 +81,14 @@ Blackjack -up-|> CardGame
 CardGame "1" o--> "1" Deck
 
 class Player {
-  + Hand hand
+  + Hand hand{readonly}
   + String name{readonly}
-  + Score score
   ===
   + void addCardInHand(Card)
 }
 class Hand {
   - Card cards[]
+  + Number rank
   + void addCard(Card)
 }
 
@@ -114,10 +114,6 @@ enum Direction {
 Card --> Suit
 Card --> Direction
 
-class Score {
-  + Number num{readonly}
-}
-
 CardGameManager -up-> IInput
 CardGameManager -up-> IOutput
 CardGameManager ..> CardGame
@@ -126,7 +122,6 @@ CardGame "1" o-left-> "1" CommandList
 CardGame "1" o--> "2..*" Player
 Deck "1" o--> "*" Card
 Hand "1" o--> "0..1" Card
-Player "1" o--> "1" Score
 'Player.IPlayer ..>  Card.Card
 
 @enduml
