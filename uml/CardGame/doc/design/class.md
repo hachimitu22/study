@@ -86,12 +86,15 @@ CardGame "1" o--> "1" Deck
 class Player {
   + Hand hand{readonly}
   + String name{readonly}
+  + String toString(void)
 }
 interface IHand {
-  + Card cards[]
+  + Card cards[]{readonly}
   + void addCard(Card)
-  + void calculationRank(void)
+  + void openAll(void)
   + Number getRank(void)
+  + void calculationRank(void)
+  + String toString(void)
 }
 class WarHand {
 }
