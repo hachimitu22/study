@@ -54,17 +54,24 @@ class CommandList {
 CommandList "1" o-left-> "1..*" Command
 
 abstract CardGame {
-  # CommandList commandList
-  # Player players
+  # IInput input
+  # IOutput output
+  # Player players[]
   # Deck deck
-  # void isContinue(void)
-  # void showResult(void)
+  # CommandList commandList
   + void run(void)
 }
 class War {
+  - String activeCommandLabels[]
+  - Card dumpCards[]{readonly}
+  - void title(void)
+  - void start(void)
   - void deal(void)
-  - void openCard(void)
-  - void judge(void)
+  - void open(void)
+  - void showResult(void)
+  - void continue(void)
+  - void setBaseDisplay(void)
+  - String chooseCommand(String activeCommandLabels[])
 }
 class Blackjack {
   - Player dealer
@@ -133,6 +140,8 @@ CardGameManager -up-> IInput
 CardGameManager -up-> IOutput
 CardGameManager ..> CardGame
 
+CardGame -up-> IInput
+CardGame -up-> IOutput
 CardGame "1" o-left-> "1" CommandList
 CardGame "1" o--> "2..*" Player
 
