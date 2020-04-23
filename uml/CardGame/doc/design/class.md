@@ -38,7 +38,7 @@ class CardGameManager {
   + void run(void)
 }
 
-class Command <<(S,#FF8000)struct>> {
+class Command {
   + String label{readonly}
   + Function callback{readonly}
 }
@@ -46,8 +46,10 @@ class CommandList {
   - Command commands[]
   + void addCommand(String, Function)
   + void execute(String label)
-  '+ CommandList pickList(String[] labels)
   + String[] getLabels(void)
+  + CommandList choise(String labels[])
+  + Number size(void)
+  + String toString(void)
 }
 CommandList "1" o-left-> "1..*" Command
 
