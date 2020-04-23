@@ -9,12 +9,12 @@ class Point {
 }
 
 interface IInput {
-  + String GetChar(void)
   + Number ChooseNumber(Number min, Number max)
 }
 interface IOutput {
-  + void clearScreen(void)
-  + void printText(String text, Point point, Boolean isBuffering)
+  + void clearScreen(Boolean withBuffer)
+  + void resize(Number width, Number height)
+  + void setBufferText(String text, Point point)
   + void print(void)
 }
 class Keyboard
