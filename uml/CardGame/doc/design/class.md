@@ -10,6 +10,7 @@ class Point {
 
 interface IInput {
   + String GetChar(void)
+  + Number ChooseNumber(Number min, Number max)
 }
 interface IOutput {
   + void clearScreen(void)
