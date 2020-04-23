@@ -60,16 +60,16 @@ abstract CardGame {
   + void run(void)
 }
 class War {
-  + void deal(void)
-  + void openCard(void)
-  + void judge(void)
+  - void deal(void)
+  - void openCard(void)
+  - void judge(void)
 }
 class Blackjack {
   - Player dealer
-  + void turnPlayers(void)
-  + void turnDealer(void)
-  + void openCard(void)
-  + void judge(void)
+  - void turnPlayers(void)
+  - void turnDealer(void)
+  - void openCard(void)
+  - void judge(void)
 }
 class Deck {
   - Card cards[]
@@ -102,8 +102,8 @@ BlackjackHand -up-|> IHand
 Player "1" o--> "1" IHand
 
 class Card {
-  - Number num
-  - Suit suit
+  + Number num{readonly}
+  + Suit suit{readonly}
   - Direction direction
   + void flip(Direction)
 }
