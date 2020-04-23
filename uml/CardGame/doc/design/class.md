@@ -83,16 +83,22 @@ CardGame "1" o--> "1" Deck
 class Player {
   + Hand hand{readonly}
   + String name{readonly}
-  ===
-  + void addCardInHand(Card)
 }
-class Hand {
-  - Card cards[]
-  + Number rank
+interface IHand {
+  + Card cards[]
   + void addCard(Card)
+  + void calculationRank(void)
+  + Number getRank(void)
+}
+class WarHand {
+}
+class BlackjackHand {
 }
 
-Player "1" o-> "1" Hand
+WarHand -up-|> IHand
+BlackjackHand -up-|> IHand
+
+Player "1" o--> "1" IHand
 
 class Card {
   - Number num
@@ -120,8 +126,12 @@ CardGameManager ..> CardGame
 
 CardGame "1" o-left-> "1" CommandList
 CardGame "1" o--> "2..*" Player
+
+War ..> WarHand
+Blackjack ..> BlackjackHand
+
 Deck "1" o--> "*" Card
-Hand "1" o--> "0..1" Card
+IHand "1" o--> "0..1" Card
 'Player.IPlayer ..>  Card.Card
 
 @enduml
