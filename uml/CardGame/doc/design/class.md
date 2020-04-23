@@ -75,6 +75,8 @@ class Deck {
   - Card cards[]
   + Card draw(void)
   + void shuffle(void)
+  + void addCards(Card card[])
+  + Number rest(void)
 }
 
 War -up-|> CardGame
@@ -106,6 +108,7 @@ class Card {
   + Suit suit{readonly}
   - Direction direction
   + void flip(Direction)
+  + void toString(void)
 }
 enum Suit {
   + Spade

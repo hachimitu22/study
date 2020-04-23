@@ -40,4 +40,10 @@ export default class Deck {
       this.cards = _sh(this.cards, 0);
     }
   }
+  public addCards(cards: Card[]) {
+    this.cards.push(...cards);
+  }
+  public rest(): number {
+    return this.cards.length;
+  }
 }
