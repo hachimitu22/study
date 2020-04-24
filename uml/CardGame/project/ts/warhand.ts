@@ -36,8 +36,9 @@ export default class WarHand implements Hand {
     this.rank = this.cards[0].num;
   }
   toString(): string {
+    const rank = this.rank.toString().padStart(2, ' ');
     const cards = this.cards.map((card: Card) => `[${card.toString()}]`);
-    const line = `{${cards.join(',')}}`;
+    const line = `${rank}:{${cards.join(',')}}`;
     return line;
   }
 }

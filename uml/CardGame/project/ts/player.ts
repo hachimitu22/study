@@ -10,7 +10,7 @@ export default class Player {
     this.hand = hand;
   }
   public toString(): string {
-    const name = (this.name + ' '.repeat(10)).substring(0, 10);
+    const name = this.name.padEnd(10, ' ');
     const handStr = this.hand.toString();
     const line = `${name}:${handStr}`;
     return line;
