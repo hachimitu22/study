@@ -1,12 +1,14 @@
 import Hand from './hand';
+import IPlayerStatus from './playerstatus';
 
 export default class Player {
-  public readonly name: string;
   public readonly hand: Hand;
 
-  constructor(name: string, hand: Hand) {
-    this.name = name;
-    this.hand = hand;
+  constructor(public readonly name: string, public status: IPlayerStatus) {
+    this.hand = new Hand();
+  }
+  public changeParam(param: IPlayerStatus) {
+    this.status = param;
   }
   public toString(): string {
     const name = this.name.padEnd(10, ' ');

@@ -2,8 +2,12 @@ import CardGame from './cardgame'
 import { IInput, IOutput } from './io';
 import Player from './player';
 import Point from './point';
-import WarHand from './warhand'
 import Card from './card';
+import IPlayerStatus from './playerstatus';
+
+class WarPlayerStatus implements IPlayerStatus {
+  constructor(public num: number){}
+}
 
 export default class War extends CardGame {
   private activeCommandLabels: string[];
@@ -13,8 +17,8 @@ export default class War extends CardGame {
   constructor(input: IInput, output: IOutput) {
     super(input, output);
 
-    this.players.push(new Player('User1', new WarHand()));
-    this.players.push(new Player('Cpu1', new WarHand()));
+    this.players.push(new Player('User1', new WarPlayerStatus(0)));
+    this.players.push(new Player('Cpu1', new WarPlayerStatus(0)));
 
     const width: number = 40;
     const height: number = this.players.length + 1;
@@ -60,9 +64,14 @@ export default class War extends CardGame {
     ];
   }
   private deal(): void {
-    this.players.forEach(player => {
+    this.players.forEach((player: Player) => {
       const card = this.deck.draw();
       player.hand.addCard(card);
+      if (player.status instanceof WarPlayerStatus) {
+        player.status.num = card.num;
+      } else {
+        throw new Error(`${WarPlayerStatus.name} が使われていません。`);
+      }
     });
   }
   private open(): void {
@@ -79,7 +88,13 @@ export default class War extends CardGame {
     ];
   }
   private showResult(): void {
-    const nums = this.players.map(p => p.hand.getRank());
+    const nums = this.players.map((p: Player) => {
+      if (p.status instanceof WarPlayerStatus) {
+        return p.status.num;
+      } else {
+        throw new Error(`${WarPlayerStatus.name} が使われていません。`);
+      }
+    });
     const maxNum = Math.max(...nums);
 
     nums.forEach((n, i) => {
