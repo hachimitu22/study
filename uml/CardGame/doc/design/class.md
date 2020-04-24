@@ -100,6 +100,7 @@ class Player {
 interface IHand {
   + Card cards[]{readonly}
   + void addCard(Card)
+  + Card[] releaseAll(void)
   + void openAll(void)
   + Number getRank(void)
   + void calculationRank(void)

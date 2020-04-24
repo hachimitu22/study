@@ -85,9 +85,7 @@ export default class War extends CardGame {
   }
   private continue(): void {
     this.players.forEach(p => {
-      if (p.hand instanceof WarHand) {
-        this.dumpCards.push(...p.hand.dumpCards());
-      }
+      this.dumpCards.push(...p.hand.releaseAll());
     });
 
     if (this.players.length > this.deck.rest()) {

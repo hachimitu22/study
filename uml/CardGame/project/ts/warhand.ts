@@ -10,7 +10,7 @@ export default class WarHand implements Hand {
     this.rank = 0;
   }
 
-  public dumpCards(): Card[] {
+  releaseAll(): Card[] {
     const cards = [...this.cards];
     while (this.cards.length > 0) this.cards.pop();
 
