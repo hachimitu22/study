@@ -8,14 +8,17 @@ import Card from './card';
 export default class War extends CardGame {
   private activeCommandLabels: string[];
   private readonly dumpCards: Card[];
+  private readonly commandPointX: number;
 
   constructor(input: IInput, output: IOutput) {
     super(input, output);
 
     this.players.push(new Player('User1', new WarHand()));
     this.players.push(new Player('Cpu1', new WarHand()));
- 
-    this.output.resize(40, this.players.length + 1);
+
+    const width: number = 40;
+    const height: number = this.players.length + 1;
+    this.output.resize(width, height);
 
     this.commandList.addCommand('start', () => { this.start(); });
     this.commandList.addCommand('open', () => { this.open();});
@@ -24,6 +27,7 @@ export default class War extends CardGame {
 
     this.activeCommandLabels = [];
     this.dumpCards = [];
+    this.commandPointX = height - 1;
   }
   public run(): void {
     this.title();
@@ -80,7 +84,7 @@ export default class War extends CardGame {
 
     nums.forEach((n, i) => {
       const text = n === maxNum ? 'WIN' : 'LOSE';
-      this.output.setBufferText(text, new Point(20, i));
+      this.output.setBufferText(text, new Point(30, i));
     });
   }
   private continue(): void {
@@ -104,8 +108,10 @@ export default class War extends CardGame {
   }
   private chooseCommand(activeCommandLabels: string[]): string {
     const cl = this.commandList.choice(activeCommandLabels);
-    console.log(cl.toString());
-    // this.output.printText(cl.show(), new Point(0, this.players.length), false);
+    this.output.setBufferText(cl.toString(), new Point(0, this.commandPointX));
+    this.output.clearScreen(false);
+    this.output.print();
+
     const index: number = this.input.chooseNumber(0, cl.size() - 1);
 
     return activeCommandLabels[index];
