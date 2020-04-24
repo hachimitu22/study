@@ -15,6 +15,9 @@ export default class Card {
   public flip(direction: Direction): void {
     this.direction = direction;
   }
+  public getDirection(): Direction {
+    return this.direction;
+  }
   public toString(): string {
     if (this.direction === Direction.Back) {
       return '* **'
