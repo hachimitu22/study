@@ -2,6 +2,7 @@ import War from './war'
 import Keyboard from './keyboard'
 import CommandPrompt from './commandprompt'
 import CardGame from './cardgame';
+import Blackjack from './blackjack'
 
 export default class CardGameManager {
   constructor(private input: Keyboard, private output: CommandPrompt) {
@@ -14,6 +15,6 @@ export default class CardGameManager {
     }
   }
   private selectGame(): CardGame {
-    return new War(this.input, this.output);
+    return new Blackjack(this.input, this.output);
   }
 }
