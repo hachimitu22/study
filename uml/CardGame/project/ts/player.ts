@@ -12,8 +12,9 @@ export default class Player {
   }
   public toString(): string {
     const name = this.name.padEnd(10, ' ');
+    const status = this.status.toString();
     const handStr = this.hand.toString();
-    const line = `${name}:${handStr}`;
+    const line = `${name}:${status}:${handStr}`;
     return line;
   }
 }
